@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#dbb5b7">
+<title>Spring, By Ear — A Listening Garden</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="script.js"></script>
+</head>
+<body>
+<main id="garden" class="garden" aria-label="Spring listening garden">
+ <div class="world active" data-index="0" style="--photo:url('https://images.unsplash.com/photo-1725529643877-b8073c468a6d?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="world" data-index="1" style="--photo:url('https://images.unsplash.com/photo-1610734867478-86ce4cad159d?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div><div class="rain-layer"></div></div>
+ <div class="world" data-index="2" style="--photo:url('https://images.unsplash.com/photo-1561479169-59720a41d38d?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="world" data-index="3" style="--photo:url('https://images.unsplash.com/photo-1734433511653-fadaf7bbb677?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="world" data-index="4" style="--photo:url('https://images.unsplash.com/photo-1743011984992-a0ae8cca82da?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="world" data-index="5" style="--photo:url('https://images.unsplash.com/photo-1610734867478-86ce4cad159d?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="world" data-index="6" style="--photo:url('https://images.unsplash.com/photo-1734433511653-fadaf7bbb677?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="world" data-index="7" style="--photo:url('https://images.unsplash.com/photo-1561479169-59720a41d38d?auto=format&fit=crop&w=2000&q=84')"><div class="photo"></div></div>
+ <div class="backup-photo" aria-hidden="true"></div><div class="wash" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
+ <header class="topbar">
+  <a class="brand" href="index.html">Spring, By Ear.</a>
+  <button id="soundToggle" class="sound-button" type="button" aria-label="Enable sound" aria-pressed="false"><span class="bars" aria-hidden="true"><b></b><b></b><b></b><b></b></span><span id="soundText">Sound Off</span></button>
+ </header>
+ <div class="interaction">
+   <button id="spinWheel" class="spin-wheel" type="button" aria-label="Click to spin to the next spring scene"><span id="wheelFace" class="wheel-face" aria-hidden="true"><span class="petal p1"></span><span class="petal p2"></span><span class="petal p3"></span><span class="petal p4"></span><span class="center-dot"></span></span></button>
+   <span id="spinHint" class="spin-hint">Click To Listen <span aria-hidden="true">↗</span></span>
+ </div>
+ <footer class="footer"><div class="caption"><h1 id="sceneName">Birds Chirping</h1><p id="sceneMicro">A New Beginning</p></div><div class="footer-note">A Listening Garden</div></footer>
+ <div id="preloadStatus" class="sr-only" aria-live="polite"></div><div class="audio-message" id="audioMessage" role="status" aria-live="polite"></div>
+</main>
+</body>
+</html>

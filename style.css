@@ -1,0 +1,344 @@
+@font-face {
+  font-family: Gaisyr;
+  src: local("ABC Gaisyr"),local("Gaisyr");
+  font-display: swap;
+}
+* {
+  box-sizing: border-box;
+}
+html,body {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: Gaisyr,Georgia,serif;
+  color: #fff;
+  background: #a79a98;
+}
+.garden {
+  position: relative;
+  min-height: 100svh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  touch-action: pan-y;
+  background: #ab949a;
+}
+.world,.backup-photo,.wash,.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.world {
+  opacity: 0;
+  transition: opacity 1.25s ease;
+  z-index: 0;
+}
+.world.active {
+  opacity: 1;
+}
+.world .photo {
+  position: absolute;
+  inset: -2%;
+  background-image: var(--photo);
+  background-position: center;
+  background-size: cover;
+  transform: scale(1.035);
+  animation: float 15s ease-in-out infinite alternate;
+}
+.world:nth-child(2n) .photo {
+  animation-direction: alternate-reverse;
+}
+.world:nth-child(3n) .photo {
+  background-position: 50% 42%;
+}
+.world:nth-child(5) .photo {
+  background-position: 60% 50%;
+}
+.backup-photo {
+  z-index: -1;
+  background: url("assets/floral-collage.png") center/cover no-repeat;
+}
+.wash {
+  z-index: 1;
+  background: linear-gradient(180deg,rgba(18,21,21,.24) 0%,transparent 29%,rgba(30,18,24,.04) 59%,rgba(18,19,22,.34) 100%),linear-gradient(90deg,rgba(47,25,33,.09),transparent 45%);
+  mix-blend-mode: multiply;
+}
+.grain {
+  z-index: 2;
+  opacity: .13;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+.topbar,.interaction,.footer {
+  position: absolute;
+  z-index: 5;
+}
+.topbar {
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px clamp(25px,4.8vw,82px);
+}
+.brand {
+  color: inherit;
+  text-decoration: none;
+  font-size: clamp(18px,2vw,25px);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -.025em;
+}
+.sound-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  color: white;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: .04em;
+}
+.bars {
+  height: 15px;
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.bars b {
+  height: 5px;
+  width: 2px;
+  background: white;
+  border-radius: 5px;
+  opacity: .85;
+}
+.bars b:nth-child(2) {
+  height: 13px;
+}
+.bars b:nth-child(3) {
+  height: 9px;
+}
+.bars b:nth-child(4) {
+  height: 5px;
+}
+.sound-button[aria-pressed=true] .bars b {
+  animation: meter .8s ease-in-out infinite alternate;
+}
+.sound-button[aria-pressed=true] .bars b:nth-child(2) {
+  animation-delay: .2s;
+}
+.sound-button[aria-pressed=true] .bars b:nth-child(3) {
+  animation-delay: .4s;
+}
+.interaction {
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%,-48%);
+}
+.spin-wheel {
+  width: min(30vw,260px);
+  height: min(30vw,260px);
+  min-width: 160px;
+  min-height: 160px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  touch-action: none;
+  border: 1px solid rgba(255,255,255,.68);
+  background: rgba(255,252,252,.11);
+  box-shadow: 0 0 0 15px rgba(255,255,255,.035),0 0 90px rgba(245,231,227,.13),inset 0 0 35px rgba(255,255,255,.08);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transition: background .3s,box-shadow .3s;
+}
+.spin-wheel:hover {
+  background: rgba(255,255,255,.2);
+  box-shadow: 0 0 0 18px rgba(255,255,255,.055),0 0 90px rgba(245,231,227,.18);
+}
+.spin-wheel:focus-visible,.sound-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 8px;
+}
+.wheel-face {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  display: block;
+  transform: rotate(var(--angle,0deg));
+  transition: transform 1.8s cubic-bezier(.18,.74,.12,1);
+}
+.petal {
+  position: absolute;
+  top: 6px;
+  left: 35px;
+  width: 20px;
+  height: 38px;
+  border-radius: 50% 50% 38% 38%;
+  border: 1.5px solid white;
+  transform-origin: 50% 39px;
+}
+.p1 {
+  transform: rotate(0deg);
+}
+.p2 {
+  transform: rotate(90deg);
+}
+.p3 {
+  transform: rotate(180deg);
+}
+.p4 {
+  transform: rotate(270deg);
+}
+.center-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border: 1px solid #fff;
+  background: rgba(255,255,255,.8);
+  border-radius: 50%;
+  top: 40px;
+  left: 40px;
+}
+.spin-hint {
+  margin-top: 34px;
+  font-family: Arial,Helvetica,sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .19em;
+  font-size: 10px;
+  text-shadow: 0 1px 12px #554;
+}
+.spin-hint span {
+  font-size: 15px;
+  padding-left: 5px;
+}
+.footer {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  padding: 25px clamp(25px,4.8vw,82px) 42px;
+}
+.caption h1 {
+  font: 400 clamp(35px,6vw,92px)/.98 Gaisyr,Georgia,serif;
+  letter-spacing: -.038em;
+  margin: 0;
+  text-shadow: 0 1px 24px #3335;
+  font-style: normal;
+}
+.caption p {
+  font: 12px/1.5 Arial,sans-serif;
+  letter-spacing: .11em;
+  margin: 16px 0 0;
+  text-transform: uppercase;
+}
+.footer-note {
+  font: 11px Arial,sans-serif;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  opacity: .85;
+  white-space: nowrap;
+  padding-bottom: 6px;
+}
+.rain-layer {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(100deg,transparent 0 21px,rgba(255,255,255,.12) 22px,transparent 24px 47px);
+  opacity: .14;
+  animation: rain 1.5s linear infinite;
+}
+.sr-only {
+  position: absolute;
+  left: -99999px;
+}
+@keyframes float {
+  from {
+    transform: scale(1.04) translateY(-1%);
+  }
+  to {
+    transform: scale(1.08) translateY(1%);
+  }
+}
+@keyframes meter {
+  to {
+    height: 3px;
+  }
+}
+@keyframes rain {
+  to {
+    transform: translateX(-60px) translateY(80px);
+  }
+}
+@media(max-width:650px) {
+  .topbar {
+    padding: 23px 23px;
+  }
+  .brand {
+    font-size: 20px;
+  }
+  .spin-wheel {
+    width: 180px;
+    height: 180px;
+  }
+  .wheel-face {
+    transform: scale(.8) rotate(var(--angle,0deg));
+  }
+  .footer {
+    padding: 0 24px 30px;
+    display: block;
+  }
+  .caption h1 {
+    font-size: clamp(38px,11vw,65px);
+  }
+  .footer-note {
+    display: none;
+  }
+  .caption p {
+    font-size: 10px;
+    margin-top: 11px;
+  }
+  .interaction {
+    top: 44%;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  .photo {
+    animation: none !important;
+  }
+  .rain-layer {
+    animation: none;
+  }
+  .world {
+    transition-duration: .2s;
+  }
+  .wheel-face {
+    transition-duration: .15s;
+  }
+}
+.audio-message {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  font: 12px/1.4 Arial,sans-serif;
+  color: #fff;
+  text-shadow: 0 2px 6px #000a;
+  text-align: center;
+  max-width: 90vw;
+  pointer-events: none;
+}
+.audio-message:empty {
+  display: none;
+}
